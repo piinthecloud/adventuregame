@@ -6,8 +6,8 @@ class Garden
     @rooms = []
   end
 
-  def add_room(reference, name, description, connections)
-    @rooms << Room.new(reference, name, description, connections)
+  def add_room(reference, name, description, connections, items)
+    @rooms << Room.new(reference, name, description, connections, items)
   end
 
 #sets locationa attribute
@@ -57,19 +57,27 @@ class Garden
   end
 
   class Room
-    attr_accessor :reference, :name, :description, :connections
+    attr_accessor :reference, :name, :description, :connections, :items
 
-    def initialize(reference, name, description, connections)
+    def initialize(reference, name, description, connections, items)
       @reference = reference
       @name = name
       @description = description
       @connections = connections
+      @items = items
     end
+
+  #Method to show player which items are available to pick up.
+    # def pickup(items)
+    #   current_room.items.keys
+    # end
 
     def full_description
       puts @name + "\nYou are in " + @description
       puts "You can go:"
       puts @connections.keys
+      puts "=>This room has a:"
+      puts @items
     end
   end
 end
@@ -84,10 +92,10 @@ my_garden = Garden.new(name)
 
 
 #add rooms to garden
-my_garden.add_room(:gazebo, "\nGazebo", "a cute gazebo. \nLook around.", {north: :smalllawn, east: :duckpond})
-my_garden.add_room(:smalllawn, "\nSmall Lawn", "a small adorable  lawn.", {east: :rosegarden, south: :gazebo})
-my_garden.add_room(:rosegarden, "\nRose Garden", "a lovely rose garden.", {south: :duckpond, west: :smalllawn})
-my_garden.add_room(:duckpond, "\nDuck Pond", "a pond full of ducks.", {west: :gazebo, north: :rosegarden})
+my_garden.add_room(:gazebo, "\nGazebo", "a cute gazebo. \nLook around.", {north: :smalllawn, east: :duckpond}, :lantern)
+my_garden.add_room(:smalllawn, "\nSmall Lawn", "a small adorable  lawn.", {east: :rosegarden, south: :gazebo}, :picnic_table)
+my_garden.add_room(:rosegarden, "\nRose Garden", "a lovely rose garden.", {south: :duckpond, west: :smalllawn}, :flower)
+my_garden.add_room(:duckpond, "\nDuck Pond", "a pond full of ducks.", {west: :gazebo, north: :rosegarden}, :duck)
 
 #Start Garden by placing the player in the large
 my_garden.start(:gazebo)
@@ -102,7 +110,7 @@ while true
     if  my_garden.can_go?(direction)#the user can go in the direction they put in, then
       my_garden.go(direction)
     else
-      puts "Tha't not a direction you can go in. Try going: #{my_garden.possible_exits}"
+      puts "That's not a direction you can go in. Try going: #{my_garden.possible_exits}"
     end
   else
      puts "\nTry typing in North, South, East, or West."
@@ -117,3 +125,14 @@ while true
     #   puts "\nThats not an option. Try going a different way."
     # end
 end
+
+# case direction
+# when :east, :west, :north, :south
+#   if  my_garden.can_go?(direction)#the user can go in the direction they put in, then
+#     my_garden.go(direction)
+#   else
+#     puts "That's not a direction you can go in. Try going: #{my_garden.possible_exits}"
+#   end
+# else
+#    puts "\nTry typing in North, South, East, or West."
+# end
