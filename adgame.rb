@@ -107,6 +107,9 @@ while true
   else
      puts "\nTry typing in North, South, East, or West."
   end
+  if direction == :exit
+    break
+  end
     # if direction == nil
     #   puts "Thats not an option. Try going a different way."
     # end
